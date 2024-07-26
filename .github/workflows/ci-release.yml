@@ -70,9 +70,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - setup: centos6-x86_64
-            docker-compose-build: "-f docker/docker-compose.centos-6.yaml -f docker/docker-compose.centos-6.18.yaml build"
-            docker-compose-run: "-f docker/docker-compose.centos-6.yaml -f docker/docker-compose.centos-6.18.yaml run stage-release"
+          - setup: fedora39-x86_64
+            docker-compose-build: "-f docker/docker-compose.fedora.yaml -f docker/docker-compose.fedora-39.18.yaml build"
+            docker-compose-run: "-f docker/docker-compose.fedora.yaml -f docker/docker-compose.fedora-39.18.yaml run stage-release"
           - setup: debian7-x86_64
             docker-compose-build: "-f docker/docker-compose.debian.yaml -f docker/docker-compose.debian-7.18.yaml build"
             docker-compose-run: "-f docker/docker-compose.debian.yaml -f docker/docker-compose.debian-7.18.yaml run stage-release"
@@ -295,17 +295,17 @@ jobs:
           name: debian7-x86_64-local-staging
           path: ~/debian7-x86_64-local-staging
 
-      - name: Download centos6-x86_64 staging directory
+      - name: Download fedora39-x86_64 staging directory
         uses: actions/download-artifact@v4
         with:
-          name: centos6-x86_64-local-staging
-          path: ~/centos6-x86_64-local-staging
+          name: fedora39-x86_64-local-staging
+          path: ~/fedora39-x86_64-local-staging
 
       # This step takes care of merging all the previous staged repositories in a way that will allow us to deploy
       # all together with one maven command.
       - name: Merge staging repositories
         working-directory: ./prepare-release-workspace/
-        run: bash ./.github/scripts/merge_local_staging.sh /home/runner/local-staging/staging ~/windows-x86_64-local-staging/staging ~/centos7-aarch64-local-staging/staging ~/debian7-x86_64-local-staging/staging ~/centos6-x86_64-local-staging/staging
+        run: bash ./.github/scripts/merge_local_staging.sh /home/runner/local-staging/staging ~/windows-x86_64-local-staging/staging ~/centos7-aarch64-local-staging/staging ~/debian7-x86_64-local-staging/staging ~/fedora39-x86_64-local-staging/staging
 
       # Cache .m2/repository
       - uses: actions/cache@v4

@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+
+  runtime-setup:
+    image: netty-tcnative-fedora:fedora-39-1.8
+    build:
+      args:
+        fedora_version : "39"
+        java_version : "8.0.422-zulu"
+        openssl_version : "3.0.9"
+
+  build:
+    image: netty-tcnative-fedora:fedora-39-1.8
+
+  build-clean:
+    image: netty-tcnative-fedora:fedora-39-1.8
+
+  deploy:
+    image: netty-tcnative-fedora:fedora-39-1.8
+
+  stage-snapshot:
+    image: netty-tcnative-fedora:fedora-39-1.8
+
+  stage-release:
+    image: netty-tcnative-fedora:fedora-39-1.8
+
+  shell:
+    image: netty-tcnative-fedora:fedora-39-1.8

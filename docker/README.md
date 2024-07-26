@@ -15,10 +15,10 @@ cd /path/to/netty-tcnative/
 docker compose -f docker/docker-compose.arch.yaml -f docker/docker-compose.arch-18.yaml run build
 ```
 
-## centos 6 with java 8
+## Fedora 39 with java 8
 
 ```
-docker compose -f docker/docker-compose.centos-6.yaml -f docker/docker-compose.centos-6.18.yaml run build
+docker-compose -f docker/docker-compose.fedora.yaml -f docker/docker-compose.fedora-39.18.yaml run build
 ```
 
 ## debian 7 with java 8
