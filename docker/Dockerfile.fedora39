@@ -1,0 +1,69 @@
+ARG fedora_version=39
+FROM fedora:$fedora_version
+ARG fedora_version
+ARG openssl_version=3.0.9
+ARG java_version="8.0.422-zulu"
+
+ENV SOURCE_DIR=/root/source \
+    CMAKE_VERSION=3.8.2 \
+    NINJA_VERSION=1.7.2 \
+    MAVEN_VERSION=3.9.8 \
+    OPENSSL_VERSION=$openssl_version \
+    JAVA_VERSION=$java_version
+
+
+# install dependencies
+RUN yum install -y \
+    apr-devel \
+    autoconf \
+    automake \
+    cmake \
+    git \
+    glibc-devel \
+    gnupg \
+    golang \
+    libtool \
+    redhat-lsb-core \
+    make \
+    perl \
+    tar \
+    unzip \
+    wget \
+    which \
+    zip && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+RUN mkdir $SOURCE_DIR
+WORKDIR $SOURCE_DIR
+
+# Install Ninja
+RUN wget -q https://github.com/ninja-build/ninja/releases/download/v$NINJA_VERSION/ninja-linux.zip && \
+    unzip ninja-linux.zip && mkdir -p /opt/ninja-$NINJA_VERSION/bin && \
+    mv ninja /opt/ninja-$NINJA_VERSION/bin && \
+    echo 'PATH=/opt/ninja-$NINJA_VERSION/bin:$PATH' >> ~/.bashrc
+
+# Install OpenSSL
+RUN wget -q https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
+    tar -xzf openssl-${OPENSSL_VERSION}.tar.gz && \
+    cd $SOURCE_DIR/openssl-${OPENSSL_VERSION} && \
+    ./Configure --prefix=/usr/local/openssl --openssldir=/usr/local/openssl no-tests no-legacy shared enable-md2 '-Wl,--enable-new-dtags,-rpath,$(LIBRPATH)' && \
+    make install_sw install_ssldirs install_dev && \
+    ln -s -T /usr/local/openssl/lib64 /usr/local/openssl/lib && \
+    ldconfig /usr/local/openssl/lib64 && \
+    ldconfig
+ENV PATH=/usr/local/openssl/bin:$PATH \
+    OPENSSL_INCLUDE_DIR=/usr/local/openssl/include \
+    OPENSSL_LIB_DIR=/usr/local/openssl/lib64
+RUN rm -rf $SOURCE_DIR
+
+# Downloading and installing SDKMAN, java and maven
+RUN curl -s "https://get.sdkman.io" | bash && \
+    bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
+    yes | sdk install java $JAVA_VERSION && \
+    yes | sdk install maven $MAVEN_VERSION && \
+    rm -rf $HOME/.sdkman/archives/* && \
+    rm -rf $HOME/.sdkman/tmp/*" && \
+    echo 'export JAVA_HOME="/root/.sdkman/candidates/java/current"' >> ~/.bashrc && \
+    echo 'PATH=$JAVA_HOME/bin:/root/.sdkman/candidates/maven/current/bin:$PATH' >> ~/.bashrc
+

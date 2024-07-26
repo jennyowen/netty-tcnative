@@ -22,9 +22,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - setup: centos6-x86_64
-            docker-compose-build: "-f docker/docker-compose.centos-6.yaml -f docker/docker-compose.centos-6.18.yaml build"
-            docker-compose-run: "-f docker/docker-compose.centos-6.yaml -f docker/docker-compose.centos-6.18.yaml run build"
+          - setup: fedora39-x86_64
+            docker-compose-build: "-f docker/docker-compose.fedora.yaml -f docker/docker-compose.fedora-39.18.yaml build"
+            docker-compose-run: "-f docker/docker-compose.fedora.yaml -f docker/docker-compose.fedora-39.18.yaml run build"
           - setup: debian7-x86_64
             docker-compose-build: "-f docker/docker-compose.debian.yaml -f docker/docker-compose.debian-7.18.yaml build"
             docker-compose-run: "-f docker/docker-compose.debian.yaml -f docker/docker-compose.debian-7.18.yaml run build-dynamic-only"

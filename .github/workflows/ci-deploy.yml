@@ -23,9 +23,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - setup: centos6-x86_64
-            docker-compose-build: "-f docker/docker-compose.centos-6.yaml -f docker/docker-compose.centos-6.18.yaml build"
-            docker-compose-run: "-f docker/docker-compose.centos-6.yaml -f docker/docker-compose.centos-6.18.yaml run stage-snapshot"
+          - setup: fedora39-x86_64
+            docker-compose-build: "-f docker/docker-compose.fedora.yaml -f docker/docker-compose.fedora-39.18.yaml build"
+            docker-compose-run: "-f docker/docker-compose.fedora.yaml -f docker/docker-compose.fedora-39.18.yaml run stage-snapshot"
           - setup: debian7-x86_64
             docker-compose-build: "-f docker/docker-compose.debian.yaml -f docker/docker-compose.debian-7.18.yaml build"
             docker-compose-run: "-f docker/docker-compose.debian.yaml -f docker/docker-compose.debian-7.18.yaml run stage-snapshot"
@@ -148,11 +148,11 @@ jobs:
           name: debian7-x86_64-local-staging
           path: ~/debian7-x86_64-local-staging
 
-      - name: Download centos6-x86_64 staging directory
+      - name: Download fedora39-x86_64 staging directory
         uses: actions/download-artifact@v4
         with:
-          name: centos6-x86_64-local-staging
-          path: ~/centos6-x86_64-local-staging
+          name: fedora39-x86_64-local-staging
+          path: ~/fedora39-x86_64-local-staging
 
       - name: Merge staging repositories
         run: |
@@ -163,8 +163,8 @@ jobs:
           cp -r ~/centos7-aarch64-local-staging/deferred/* ~/local-staging/deferred/
           cat ~/debian7-x86_64-local-staging/deferred/.index >>  ~/local-staging/deferred/.index
           cp -r ~/debian7-x86_64-local-staging/deferred/* ~/local-staging/deferred/
-          cat ~/centos6-x86_64-local-staging/deferred/.index >>  ~/local-staging/deferred/.index
-          cp -r ~/centos6-x86_64-local-staging/deferred/* ~/local-staging/deferred/
+          cat ~/fedora39-x86_64-local-staging/deferred/.index >>  ~/local-staging/deferred/.index
+          cp -r ~/fedora39-x86_64-local-staging/deferred/* ~/local-staging/deferred/
 
       # Cache .m2/repository
       - uses: actions/cache@v4

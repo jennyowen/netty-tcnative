@@ -314,7 +314,7 @@ AC_ARG_WITH(ssl,
 [  --with-ssl[=PATH]   Build with OpenSSL [yes|no|path]],
     use_openssl="$withval", use_openssl="auto")
 
-openssldirs="/usr/local/opt/openssl /usr /usr/local /usr/local/ssl /usr/pkg /usr/sfw"
+openssldirs="/usr/local/opt/openssl /usr /usr/local /usr/local/ssl /usr/pkg /usr/sfw /usr/local/openssl"
 if test "$use_openssl" = "auto"
 then
     for d in $openssldirs
