@@ -55,9 +55,11 @@ RUN curl -L -O https://github.com/ninja-build/ninja/releases/download/v$NINJA_VE
 RUN curl -L -O https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz && \
     tar --extract --file ./openssl-$OPENSSL_VERSION.tar.gz && \
     cd $SOURCE_DIR/openssl-$OPENSSL_VERSION && \
-    ./Configure --prefix=/usr/local/openssl --openssldir=/usr/local/openssl no-tests no-legacy shared && \
-    make install_sw install_ssldirs install_dev && \
-    ldconfig /usr/local/openssl/lib64 && \
+    ./Configure --prefix=/usr/local/opt/openssl --openssldir=/usr/local/opt/openssl no-tests no-legacy shared && \
+    make install_sw install_ssldirs install_dev
+
+RUN ln -s -T /usr/local/opt/openssl/lib64 /usr/local/opt/openssl/lib | true && \
+    ldconfig /usr/local/opt/openssl/lib64 && \
     ldconfig  && \
     rm -rf $SOURCE_DIR
 
@@ -73,7 +75,7 @@ RUN bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
     echo 'PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 
 # Prepare our own build
-ENV PATH=/root/.sdkman/candidates/maven/current:/usr/local/openssl/bin:$PATH \
-    OPENSSL_INCLUDE_DIR=/usr/local/openssl/include \
-    OPENSSL_LIB_DIR=/usr/local/openssl/lib64 \
+ENV PATH=/root/.sdkman/candidates/maven/current:/usr/local/opt/openssl/bin:$PATH \
+    OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include \
+    OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib64 \
     JAVA_HOME=/jdk/

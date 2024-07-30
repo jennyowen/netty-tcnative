@@ -47,14 +47,14 @@ RUN wget -q https://github.com/ninja-build/ninja/releases/download/v$NINJA_VERSI
 RUN wget -q https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
     tar -xzf openssl-${OPENSSL_VERSION}.tar.gz && \
     cd $SOURCE_DIR/openssl-${OPENSSL_VERSION} && \
-    ./Configure --prefix=/usr/local/openssl --openssldir=/usr/local/openssl no-tests no-legacy shared enable-md2 '-Wl,--enable-new-dtags,-rpath,$(LIBRPATH)' && \
+    ./Configure --prefix=/usr/local/opt/openssl --openssldir=/usr/local/opt/openssl no-tests no-legacy shared enable-md2 '-Wl,--enable-new-dtags,-rpath,$(LIBRPATH)' && \
     make install_sw install_ssldirs install_dev && \
-    ln -s -T /usr/local/openssl/lib64 /usr/local/openssl/lib | true && \
-    ldconfig /usr/local/openssl/lib64 && \
+    ln -s -T /usr/local/opt/openssl/lib64 /usr/local/opt/openssl/lib | true && \
+    ldconfig /usr/local/opt/openssl/lib64 && \
     ldconfig
-ENV PATH=/usr/local/openssl/bin:$PATH \
-    OPENSSL_INCLUDE_DIR=/usr/local/openssl/include \
-    OPENSSL_LIB_DIR=/usr/local/openssl/lib64
+ENV PATH=/usr/local/opt/openssl/bin:$PATH \
+    OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include \
+    OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib64
 RUN rm -rf $SOURCE_DIR
 
 # Downloading and installing SDKMAN, java and maven
