@@ -55,11 +55,11 @@ RUN curl -L -O https://github.com/ninja-build/ninja/releases/download/v$NINJA_VE
 RUN curl -L -O https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz && \
     tar --extract --file ./openssl-$OPENSSL_VERSION.tar.gz && \
     cd $SOURCE_DIR/openssl-$OPENSSL_VERSION && \
-    ./Configure --prefix=/usr/local/openssl --openssldir=/usr/local/openssl enable-fips no-tests no-legacy shared && \
+    ./Configure --prefix=/usr/local/openssl --openssldir=/usr/local/openssl no-tests no-legacy shared && \
     make install_sw install_ssldirs install_dev && \
-    ldconfig
-
-RUN rm -rf $SOURCE_DIR
+    ldconfig /usr/local/openssl/lib64 && \
+    ldconfig  && \
+    rm -rf $SOURCE_DIR
 
 # Downloading and installing SDKMAN!
 RUN curl -s "https://get.sdkman.io" | bash
